@@ -31,3 +31,9 @@ npm install --save @popperjs/core
 #### into main.js :
 import "bootstrap/dist/css/bootstrap.min.css"
 import "bootstrap"
+
+install:
+npm install && npm run dev
+
+init VUE:
+npm run serve

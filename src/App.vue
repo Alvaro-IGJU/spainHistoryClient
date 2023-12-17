@@ -1,15 +1,16 @@
 <template>
-  <ListTask></ListTask>
+  <nav-home></nav-home>
+    <router-view></router-view>
 </template>
-
 <script>
 
-import ListTask from "@/components/Task/ListTask.vue";
+
+import NavHome from "@/components/Nav/navHome.vue";
 
 export default {
   name: 'App',
   components: {
-    ListTask,
+    NavHome
   }
 }
 </script>
@@ -21,6 +22,5 @@ export default {
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
-  margin-top: 60px;
 }
 </style>
