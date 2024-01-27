@@ -8,9 +8,7 @@
       <input type="password" v-model="password" placeholder="Password" class="form-control m-1" required/>
     </div>
     <div class="container">
-
       <button class="btn btn-dark  m-1" v-on:click="loginUser()">Entra</button>
-
     </div>
   </div>
 
@@ -18,6 +16,9 @@
 
 <script>
 import axios from "axios";
+import Cookies from "js-cookie";
+
+
 
 export default {
   name: 'login-user',
@@ -25,7 +26,8 @@ export default {
   data() {
     return {
       email: null,
-      password: null
+      password: null,
+
     }
   },
   methods: {
@@ -34,7 +36,13 @@ export default {
         axios.post(this.foo + 'login', {username: this.email, password: this.password})
             .then(response => {
               if (response.data) {
-                console.log(response.data)
+                if(response.data.token){
+                  this.setUserLogged(response.data.user);
+                  localStorage.setItem('token',response.data.token);
+                  this.$emit('token',true);
+                  location.reload();
+
+                }
               }
             })
             .catch(error => {
@@ -44,7 +52,13 @@ export default {
         console.log(e)
       }
 
-    }
+    },
+    setUserLogged(userLogged) {
+      Cookies.set("userLogged", userLogged);
+    },
+    getUserLogged() {
+      return Cookies.get("userLogged");
+    },
 
   }
 }

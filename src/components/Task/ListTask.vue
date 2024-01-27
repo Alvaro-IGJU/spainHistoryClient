@@ -9,13 +9,10 @@
         <tr>
           <th>Tilte</th>
           <th>Options</th>
-
         </tr>
-
 
         </thead>
         <tbody>
-
 
         <tr v-for="item in taskList" :key="item.id">
           <td>{{ item.title }}</td>
