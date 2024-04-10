@@ -11,7 +11,7 @@
       <tr>
         <th>
           <button class="btn btn-dark" v-on:click="getListTask">List Task</button>
-          <button class="btn btn-dark ms-1" v-on:click="addUser">Registration User</button>
+<!--          <button class="btn btn-dark ms-1" v-on:click="addUser">Registration User</button>-->
           <button class="btn btn-primary m-1" v-on:click="addTask">ADD +</button>
         </th>
 
@@ -77,13 +77,10 @@ export default {
 
     },
     newTasklist(id) {
-
       this.getListTask();
-
       if (id) {
         this.addTask()
       }
-
     },
     updateTask(item) {
       this.taskUpdate = item;
