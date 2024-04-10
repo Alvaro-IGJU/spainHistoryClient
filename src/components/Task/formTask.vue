@@ -1,6 +1,6 @@
 <template>
   <div>
-    <button class="btn btn-primary m-1" v-on:click="addTask()">NEW TASK</button>
+<!--    <button class="btn btn-primary m-1" v-on:click="addTask()">NEW TASK</button>-->
     <p>Task title is: {{ title=!taskUpdate ? title : taskUpdate.title}}</p>
     <input   v-model="title" placeholder="new task" />
     <button v-on:click="saveTask(task,taskUpdate?taskUpdate.id:null)" v-show="btnTaskSave">Save</button>

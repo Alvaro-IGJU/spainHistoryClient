@@ -1,6 +1,6 @@
 <template>
 
-  <div class="container" id="block-registration">
+  <div class="container mt-3" id="block-registration">
     <div class="row">
 
       <div class="col-6">

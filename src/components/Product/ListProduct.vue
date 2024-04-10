@@ -1,9 +1,10 @@
 <template>
 
   <div class="container table-responsive mt-3 " id="block-list-task">
-    <button class="btn btn-dark" v-on:click="getListProduct">List Products</button>
-    <button class="btn btn-primary m-1" v-on:click="addProduct">ADD +</button>
-    <product-form @new-product-list="getListProduct" v-show="addProductShow"></product-form>
+
+        <button class="btn btn-dark" v-on:click="fetchData">List Products</button>
+        <button class="btn btn-primary m-1" v-on:click="addProduct">ADD +</button>
+    <product-form @new-product-list="fetchData" v-show="addProductShow"></product-form>
     <table class="table">
       <thead>
       <tr>
@@ -18,7 +19,6 @@
         </th>
         <th>IVA</th>
         <th>Opciones</th>
-
       </tr>
       </thead>
       <tbody>
@@ -31,12 +31,25 @@
           <button class="btn btn-danger m-1" v-on:click="deleteTask(item.id)">Delete</button>
           <button class="btn btn-warning m-1" v-on:click="updateTask(item)">Update</button>
         </td>
-
       </tr>
       </tbody>
     </table>
-
-
+    <div class="row">
+      <div class="col-2">
+        <input class="form-control" type="text" id="item-page" v-model="filter" :placeholder="'Filtrar'" v-on:keydown="loadItemsPage">
+      </div>
+      <div class="col-6">
+        <button v-on:click="prevPage" :disabled="currentPage === 1">Previous</button>
+        <span class="m-2">Page {{ currentPage }} of {{ totalPages }}</span>
+        <button v-on:click="nextPage" :disabled="currentPage === totalPages">Next</button>
+      </div>
+      <div class="col-2">
+        <input class="form-control" type="number" id="item-page" v-model="itemsPerPage" >
+      </div>
+      <div class="col-1">
+        <button :disabled="!itemsPerPage" class="btn btn-primary" v-on:click="loadItemsPage">Aplicar</button>
+      </div>
+    </div>
   </div>
 
 </template>
@@ -55,27 +68,15 @@ export default {
       product: null,
       productUpdate: null,
       addProductShow: false,
+      items: [],
+      currentPage: 1,
+      totalPages: 1,
+      itemsPerPage: null ?? 3,
+      filter:''
     }
   },
+
   methods: {
-    getListProduct() {
-      try {
-        this.productUpdate = "";
-        axios.get(this.foo + 'product')
-            .then(response => {
-              this.product = response.data.listProducts;
-              this.addProduct();
-            })
-            .catch(error => {
-              console.error('Error al cargar la lista de productos: ' + error);
-            });
-      } catch (e) {
-        console.log(e)
-      }
-
-    },
-
-
     addProduct() {
       this.productUpdate = null;
       this.addProductShow = !this.addProductShow;
@@ -89,8 +90,8 @@ export default {
         await axios.post(this.foo + 'product-delete', {delete: id})
             .then(response => {
               if (response.data) {
-                this.getListProduct();
-                this.addProduct();
+                alert('Producto eliminado')
+                this.fetchData()
               }
             })
             .catch(error => {
@@ -100,7 +101,40 @@ export default {
         console.log(e)
       }
     },
-  }
+
+    //   TODO :Pagination
+
+    loadItemsPage(){
+      this.fetchData();
+    },
+
+    fetchData() {
+      axios.get(this.foo + `product?page=${this.currentPage}&itemsPerPage=${this.itemsPerPage}&filter=${this.filter}`)
+          .then(response => {
+            this.product = response.data.listProducts.items;
+            this.totalPages = Math.ceil(response.data.listProducts.totalProducts / this.itemsPerPage);
+          })
+          .catch(error => {
+            console.error('Error al cargar productos:', error);
+          });
+    },
+    nextPage() {
+      if (this.currentPage < this.totalPages) {
+        this.currentPage++;
+        this.fetchData();
+      }
+    },
+    prevPage() {
+      if (this.currentPage > 1) {
+        this.currentPage--;
+        this.fetchData();
+      }
+    },
+  },
+  mounted() {
+    this.fetchData();
+
+  },
 
 
 }

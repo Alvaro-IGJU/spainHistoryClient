@@ -7,7 +7,7 @@
           <label for="name" class="form-label">Nombre</label>
           <input type="text" class="form-control text-start" id="name" v-model="name" required>
         </div>
-        <div class="col-6">
+        <div class="col-5">
           <label for="description" class="form-label">Descripción</label>
           <textarea class="form-control text-start" id="description" v-model="description" required></textarea>
         </div>
@@ -16,10 +16,10 @@
           <input type="number" class="form-control text-start" id="price" v-model="price" v-on:change="selectedIva"
                  required>
         </div>
-        <div class="col-1">
+        <div class="col-2">
           <label for="iva" class="form-label">IVA</label>
           <select class="form-select " id="iva" v-model="iva" v-on:change="selectedIva">
-            <option value="0">No aplicar IVA</option>
+            <option value="0">No IVA</option>
             <option value="4">4 %</option>
             <option value="10">10 %</option>
             <option value="21">21 %</option>
@@ -71,8 +71,6 @@ export default {
               alert('producto guardado correctamente')
               this.$emit('newProductList', null)
             }
-
-
           })
               .catch(error => {
                 console.error('Error al guardar el producto: ' + error);
@@ -80,10 +78,7 @@ export default {
         } catch (e) {
           console.log(e)
         }
-
-
       }
-
 
     },
     selectedIva() {
@@ -97,8 +92,6 @@ export default {
       } else {
         alert('Por favor , introduzca un valor en el precio')
       }
-
-
     }
   }
 
