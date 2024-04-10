@@ -48,6 +48,7 @@ export default {
                 this.email = "";
                 this.password = "";
                 console.log(response.data)
+                alert('Usuario creado')
               }
             })
             .catch(error => {
