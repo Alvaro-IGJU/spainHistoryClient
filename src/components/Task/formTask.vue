@@ -1,8 +1,9 @@
 <template>
   <div>
-    <p>Task title is: {{ !taskUpdate ? title : taskUpdate.title }}</p>
-    <input v-model="title" placeholder="edit me"/>
-    <button v-on:click="saveTask(task,taskUpdate?taskUpdate.id:null)">Save</button>
+    <button class="btn btn-primary m-1" v-on:click="addTask()">NEW TASK</button>
+    <p>Task title is: {{ title=!taskUpdate ? title : taskUpdate.title}}</p>
+    <input   v-model="title" placeholder="new task" />
+    <button v-on:click="saveTask(task,taskUpdate?taskUpdate.id:null)" v-show="btnTaskSave">Save</button>
 
   </div>
 
@@ -20,14 +21,27 @@ export default {
     taskUpdate: null,
   },
 
+
   data() {
     return {
-      title: null,
+      title:null,
+      btnTaskSave:false,
     }
   },
+  watch:{
+    title(value){
+      if(this.$props.taskUpdate){
+        this.$props.taskUpdate.title=value
+      }
+        this.btnTaskSave= value.length > 0;
+    },
+  },
+
 
   methods: {
+
     saveTask(task, id) {
+      console.log(task,id,this.title)
       try {
         axios.post(this.foo + 'task-store', {
           id: id,
@@ -45,6 +59,10 @@ export default {
         console.log(e)
       }
 
+    },
+
+    addTask(){
+      window.location.reload()
     }
   }
 }
