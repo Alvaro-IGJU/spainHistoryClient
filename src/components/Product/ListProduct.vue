@@ -44,7 +44,7 @@
         <button v-on:click="nextPage" :disabled="currentPage === totalPages">Next</button>
       </div>
       <div class="col-2">
-        <input class="form-control" type="number" id="item-page" v-model="itemsPerPage" >
+        <input class="form-control" type="number" v-model="itemsPerPage" >
       </div>
       <div class="col-1">
         <button :disabled="!itemsPerPage" class="btn btn-primary" v-on:click="loadItemsPage">Aplicar</button>

@@ -17,8 +17,8 @@
                  required>
         </div>
         <div class="col-2">
-          <label for="iva" class="form-label">IVA</label>
-          <select class="form-select " id="iva" v-model="iva" v-on:change="selectedIva">
+          <label for="iva-product" class="form-label">IVA</label>
+          <select class="form-select " id="iva-product" v-model="iva" v-on:change="selectedIva">
             <option value="0">No IVA</option>
             <option value="4">4 %</option>
             <option value="10">10 %</option>
@@ -27,11 +27,11 @@
         </div>
         <div class="col-1">
           <label for="total" class="form-label">Total</label>
-          <input class="form-control text-start" disabled :value="total+'€'">
+          <input class="form-control text-start" id="total" disabled :value="total+'€'">
         </div>
         <div class="col-1 ">
           <label for="save" class="form-label">-</label>
-          <button type='submit' class="btn btn-primary">Guardar</button>
+          <button type='submit' class="btn btn-primary" id="save">Guardar</button>
         </div>
       </div>
     </form>
