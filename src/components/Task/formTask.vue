@@ -60,7 +60,6 @@ export default {
       }
 
     },
-
     addTask(){
       window.location.reload()
     }

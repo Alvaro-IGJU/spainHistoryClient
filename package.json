@@ -12,7 +12,8 @@
     "axios": "^1.5.1",
     "bootstrap": "^5.3.2",
     "core-js": "^3.8.3",
-    "vue": "^3.2.13",
+    "renovate": "^20.5.1",
+    "vue": "^3.2.26",
     "vue-axios": "^3.5.2",
     "vue-router": "4"
   },

@@ -19,6 +19,9 @@ yarn build
 ```
 yarn lint
 ```
+## Node
+
+* npm install -g renovate@20.5.1
 
 ### Customize configuration
 See [Configuration Reference](https://cli.vuejs.org/config/).
