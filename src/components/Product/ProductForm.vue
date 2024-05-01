@@ -7,11 +7,11 @@
           <label for="name" class="form-label">Nombre</label>
           <input type="text" class="form-control text-start" id="name" v-model="name" required>
         </div>
-        <div class="col-5">
+        <div class="col-6">
           <label for="description" class="form-label">Descripción</label>
           <textarea class="form-control text-start" id="description" v-model="description" required></textarea>
         </div>
-        <div class="col-1">
+        <div class="col-2">
           <label for="price" class="form-label">Precio</label>
           <input type="number" class="form-control text-start" id="price" v-model="price" v-on:change="selectedIva"
                  required>
@@ -25,11 +25,23 @@
             <option value="21">21 %</option>
           </select>
         </div>
-        <div class="col-1">
+
+
+
+      </div>
+      <div class="row">
+
+        <div class="col-6">
+          <label for="total" class="form-label text-start">Añada una imagen</label>
+          <input class="form-control" type="file" ref="file" name='file' v-on:change="handleFileChange">
+        </div>
+
+        <div class="col-3">
+
           <label for="total" class="form-label">Total</label>
           <input class="form-control text-start" id="total" disabled :value="total+'€'">
         </div>
-        <div class="col-1 ">
+        <div class="col-3 ">
           <label for="save" class="form-label">-</label>
           <button type='submit' class="btn btn-primary" id="save">Guardar</button>
         </div>
@@ -52,23 +64,37 @@ export default {
       price: null,
       description: null,
       iva: null,
+      file: null,
       total: 0
     }
   },
+
+
   methods: {
+   handleFileChange() {
+
+     this.file = this.$refs.file.files[0];
+      // console.log(this.file);
+    },
+
     saveProduct() {
       let validate = confirm("Desea guadar el producto?");
       if (validate) {
         try {
-          axios.post(this.foo + 'product-store', {
-            id: null,
-            name: this.name,
-            description: this.description,
-            price: this.total,
-            IVA: this.iva
+          const formData = new FormData();
+          formData.append('file', this.file);
+          formData.append('iva',this.iva);
+          formData.append('name',this.name);
+          formData.append('total',this.total);
+          formData.append('description',this.description)
+          axios.post(this.foo + 'product-store', formData, {
+            headers: {
+              'Content-Type': 'multipart/form-data'
+            },
+
           }).then(response => {
             if (response) {
-              alert('producto guardado correctamente')
+
               this.$emit('newProductList', null)
             }
           })

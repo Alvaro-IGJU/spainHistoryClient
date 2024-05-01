@@ -2,8 +2,8 @@
 
   <div class="container table-responsive mt-3 " id="block-list-task">
 
-        <button class="btn btn-dark" v-on:click="fetchData">List Products</button>
-        <button class="btn btn-primary m-1" v-on:click="addProduct">ADD +</button>
+    <button class="btn btn-dark" v-on:click="fetchData">List Products</button>
+    <button class="btn btn-primary m-1" v-on:click="addProduct">ADD +</button>
     <product-form @new-product-list="fetchData" v-show="addProductShow"></product-form>
     <table class="table">
       <thead>
@@ -18,6 +18,7 @@
           Precio
         </th>
         <th>IVA</th>
+        <th>Imagen</th>
         <th>Opciones</th>
       </tr>
       </thead>
@@ -27,6 +28,7 @@
         <td>{{ item.description }}</td>
         <td>{{ item.price }} €</td>
         <td>{{ item.iva }} %</td>
+        <td><img v-if="item.image" :src="server+'uploads/images/'+item.image" alt="Uploaded Image" width="200"></td>
         <td>
           <button class="btn btn-danger m-1" v-on:click="deleteTask(item.id)">Delete</button>
           <button class="btn btn-warning m-1" v-on:click="updateTask(item)">Update</button>
@@ -36,7 +38,8 @@
     </table>
     <div class="row">
       <div class="col-2">
-        <input class="form-control" type="text" id="item-page" v-model="filter" :placeholder="'Filtrar'" v-on:keydown="loadItemsPage">
+        <input class="form-control" type="text" id="item-page" v-model="filter" :placeholder="'Filtrar'"
+               v-on:keydown="loadItemsPage">
       </div>
       <div class="col-6">
         <button v-on:click="prevPage" :disabled="currentPage === 1">Previous</button>
@@ -44,7 +47,7 @@
         <button v-on:click="nextPage" :disabled="currentPage === totalPages">Next</button>
       </div>
       <div class="col-2">
-        <input class="form-control" type="number" v-model="itemsPerPage" >
+        <input class="form-control" type="number" v-model="itemsPerPage">
       </div>
       <div class="col-1">
         <button :disabled="!itemsPerPage" class="btn btn-primary" v-on:click="loadItemsPage">Aplicar</button>
@@ -72,7 +75,8 @@ export default {
       currentPage: 1,
       totalPages: 1,
       itemsPerPage: null ?? 3,
-      filter:''
+      filter: '',
+      server: this.foo
     }
   },
 
@@ -104,7 +108,7 @@ export default {
 
     //   TODO :Pagination
 
-    loadItemsPage(){
+    loadItemsPage() {
       this.fetchData();
     },
 
