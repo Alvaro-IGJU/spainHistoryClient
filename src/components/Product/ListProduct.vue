@@ -80,6 +80,28 @@ export default {
     }
   },
 
+  beforeCreate() {
+    console.log('antes de created')
+  },
+
+  created() {
+    console.log('created')
+  },
+  beforeMount() {
+    console.log('antes de montarlo')
+  },
+  mounted() {
+    console.log('Componente montado')
+    this.fetchData();
+
+  },
+  unmounted() {
+    console.log('componente desmontado')
+  },
+
+
+
+
   methods: {
     addProduct() {
       this.productUpdate = null;
@@ -134,10 +156,6 @@ export default {
         this.fetchData();
       }
     },
-  },
-  mounted() {
-    this.fetchData();
-
   },
 
 

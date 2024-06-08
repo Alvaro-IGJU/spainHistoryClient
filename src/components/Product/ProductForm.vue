@@ -77,7 +77,7 @@ export default {
       // console.log(this.file);
     },
 
-    saveProduct() {
+   async saveProduct() {
       let validate = confirm("Desea guadar el producto?");
       if (validate) {
         try {
@@ -87,14 +87,13 @@ export default {
           formData.append('name',this.name);
           formData.append('total',this.total);
           formData.append('description',this.description)
-          axios.post(this.foo + 'product-store', formData, {
+          await axios.post(this.foo + 'product-store', formData, {
             headers: {
               'Content-Type': 'multipart/form-data'
             },
 
           }).then(response => {
             if (response) {
-
               this.$emit('newProductList', null)
             }
           })

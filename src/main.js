@@ -7,12 +7,14 @@ import ListTask from "@/components/Task/ListTask.vue";
 import {createMemoryHistory, createRouter} from "vue-router";
 import RegistrationUser from "@/components/User/RegistrationUser.vue";
 import ListProduct from "@/components/Product/ListProduct.vue";
+import LoadJson from "@/components/LoadProduct/LoadJson.vue";
 
 const routes = [
     { path: '/', component: LoginUser },
     { path: '/task', component: ListTask },
     { path: '/register', component: RegistrationUser },
     { path: '/products', component: ListProduct },
+    {path: '/load', component: LoadJson}
 ]
 
 const router = createRouter({
