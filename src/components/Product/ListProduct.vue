@@ -28,10 +28,19 @@
         <td>{{ item.description }}</td>
         <td>{{ item.price }} €</td>
         <td>{{ item.iva }} %</td>
-        <td><img v-if="item.image" :src="server+'uploads/images/'+item.image" alt="Uploaded Image" width="200"></td>
+        <td>
+          <div v-if="item.image">
+            <div v-if="!item.image.includes('http')">
+              <img :src="server+'uploads/images/'+item.image" alt="Uploaded Image" width="200">
+            </div>
+            <div v-else>
+              <img :src="item.image" alt="Uploaded Image" width="200">
+            </div>
+          </div>
+        </td>
         <td>
           <button class="btn btn-danger m-1" v-on:click="deleteTask(item.id)">Delete</button>
-          <button class="btn btn-warning m-1" v-on:click="updateTask(item)">Update</button>
+          <button class="btn btn-warning m-1" v-on:click="updateTask(item)" disabled>Update</button>
         </td>
       </tr>
       </tbody>
@@ -42,9 +51,9 @@
                v-on:keydown="loadItemsPage">
       </div>
       <div class="col-6">
-        <button v-on:click="prevPage" :disabled="currentPage === 1">Previous</button>
+        <button class="btn btn-default" v-on:click="prevPage" :disabled="currentPage === 1">Previous</button>
         <span class="m-2">Page {{ currentPage }} of {{ totalPages }}</span>
-        <button v-on:click="nextPage" :disabled="currentPage === totalPages">Next</button>
+        <button class="btn btn-default" v-on:click="nextPage" :disabled="currentPage === totalPages">Next</button>
       </div>
       <div class="col-2">
         <input class="form-control" type="number" v-model="itemsPerPage">
@@ -80,23 +89,13 @@ export default {
     }
   },
 
-  beforeCreate() {
-    console.log('antes de created')
-  },
-
-  created() {
-    console.log('created')
-  },
-  beforeMount() {
-    console.log('antes de montarlo')
-  },
   mounted() {
     console.log('Componente montado')
     this.fetchData();
 
   },
   unmounted() {
-    console.log('componente desmontado')
+
   },
 
 

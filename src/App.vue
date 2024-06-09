@@ -4,12 +4,12 @@
     <strong>Current route path:</strong> {{ $route.fullPath }}
   </p>
   <nav class="navbar navbar-expand-lg navbar-light bg-light">
-    <RouterLink class="col" class-active="active" to="/load" >Products load json</RouterLink>
+    <RouterLink class="col" class-active="active" to="/load" ><button class="btn btn-danger">Cargar json de productos</button></RouterLink>
     <RouterLink class="col" class-active="active" to="/" >Login</RouterLink>
     <button v-if="token" class="col" v-on:click="logout">Logout</button>
     <RouterLink class="col" class-active="active" to="/register">Registro</RouterLink>
     <RouterLink v-if="token" class="col" class-active="active" to="/task">Tareas</RouterLink>
-    <RouterLink v-if="token" class="col" class-active="active" to="/products">Productos</RouterLink>
+    <RouterLink  class="col" class-active="active" to="/products">Productos</RouterLink>
 
   </nav>
   <main>
