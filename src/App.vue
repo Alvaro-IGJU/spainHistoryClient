@@ -1,74 +1,67 @@
 <template>
-  <h1>Products</h1>
-  <p>
-    <strong>Current route path:</strong> {{ $route.fullPath }}
-  </p>
-  <nav class="navbar navbar-expand-lg navbar-light bg-light">
-    <RouterLink class="col" class-active="active" to="/load" ><button class="btn btn-danger">Cargar json de productos</button></RouterLink>
-    <RouterLink class="col" class-active="active" to="/" >Login</RouterLink>
-    <button v-if="token" class="col" v-on:click="logout">Logout</button>
-    <RouterLink class="col" class-active="active" to="/register">Registro</RouterLink>
-    <RouterLink v-if="token" class="col" class-active="active" to="/task">Tareas</RouterLink>
-    <RouterLink  class="col" class-active="active" to="/products">Productos</RouterLink>
+  <div id="app">
+    <HeaderHome :isAuthenticated="isAuthenticated" @login="handleLogin" @register="handleRegister"></HeaderHome>
 
-  </nav>
-  <main>
-    <RouterView/>
-  </main>
-
+    <main id="mainSection">
+      <HomeMain></HomeMain>
+      
+      <RouterView id="sectionContent"></RouterView>
+    </main>
+    
+    <LoginUser @authenticated="setAuthenticated" @login="handleLogin" v-show="login"></LoginUser>
+    <RegisterUser @register="handleRegister" v-show="register"></RegisterUser>
+  </div>
 </template>
 
 <script>
+import HeaderHome from '@/components/Header/HeaderHome.vue';
+import HomeMain from '@/components/Home/HomeMain.vue';
+import LoginUser from '@/components/User/LoginUser.vue';
+import RegisterUser from '@/components/User/RegisterUser.vue';
+import { isAuthenticated } from '@/utils/auth';
 
-import axios from "axios";
 export default {
   name: 'App',
+  components: {
+    HeaderHome,
+    HomeMain,
+    LoginUser,
+    RegisterUser
+  },
   data() {
     return {
-      token: null
-    }
+      login: false,
+      register: false,
+      isAuthenticated: false
+    };
   },
   mounted() {
-    this.token = localStorage.getItem('session_token');
+    this.isAuthenticated = isAuthenticated();
   },
-
   methods: {
-    async logout() {
-      try {
-        await axios.get(this.foo + 'logout')
-            .then(response => {
-              if (response) {
-                localStorage.setItem('session_token', '');
-                this.token = '';
-              }
-            })
-            .catch(error => {
-              console.error('Error logout: ' + error);
-            });
-      } catch (e) {
-        console.log(e)
-      }
+    handleLogin(login) {
+      this.login = login;
     },
-
+    handleRegister(register) {
+      this.register = register;
+    },
+    setAuthenticated(status) {
+      this.isAuthenticated = status;
+    },
+    
   }
-
-}
+};
 </script>
 
-<style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
+
+<style scoped>
+#mainSection {
+  margin: 2% 20%;
 }
 
-nav:hover,
-nav:active {
-  background-color: indianred;
-  cursor: pointer;
+#sectionContent {
+  margin-top: 2%;
+  width: 100%;
+  height: 70vh;
 }
-
 </style>

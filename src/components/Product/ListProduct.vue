@@ -5,7 +5,7 @@
     <button class="btn btn-dark" v-on:click="fetchData">List Products</button>
     <button class="btn btn-primary m-1" v-on:click="addProduct">ADD +</button>
     <product-form @new-product-list="fetchData" v-show="addProductShow"></product-form>
-    <table class="table">
+    <table class="table" v-show="!addProductShow">
       <thead>
       <tr>
         <th>

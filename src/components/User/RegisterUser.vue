@@ -1,20 +1,20 @@
 <template>
-  <div class="login-overlay">
-    <div class="blur-background" @click="closeLogin"></div>
-    <div class="login-container">
-      <button class="btn-close" @click="closeLogin"></button>
-      <div class="container " id="block-login">
+  <div class="register-overlay">
+    <div class="blur-background" @click="closeRegister"></div>
+    <div class="register-container">
+      <button class="btn-close" @click="closeRegister"></button>
+      <div class="container " id="block-register">
         <!-- Contenido actual del formulario de inicio de sesión -->
-        <h5 class="text-center">INICIAR SESIÓN</h5>
+         <h5 class="text-center">REGISTRARSE</h5>
         
         <div class="form-outline mt-4">
-          <input type="email" v-model="username" name="username" placeholder="email@email.com" class="m-1 input-login"/>
+          <input type="email" v-model="username" name="username" placeholder="Email" class="m-1 input-register"/>
         </div>
         <div class="form-outline">
-          <input type="password" v-model="password" name="password" placeholder="Password" class="m-1 input-login"/>
+          <input type="password" v-model="password" name="password" placeholder="Contraseña" class="m-1 input-register"/>
         </div>
         <div class="col-12 text-center mt-4">
-          <button class="btn loginBtnRed m-1" v-on:click="loginUser">Entrar</button>
+          <button class="btn  registerBtnRed m-1" v-on:click="registerUser">Registrarme</button>
         </div>
       </div>
     </div>
@@ -22,44 +22,48 @@
 </template>
 
 <script>
-import axios from 'axios';
+import axios from "axios";
 
 export default {
-  name: 'login-user',
+  name: 'register-user',
   data() {
     return {
       username: null,
-      pass: null,
-    };
+      password: null,
+    }
   },
   mounted() {
-    const email = localStorage.getItem('email');
-    this.username = email != 'undefined' ? email : '';
+    let email = localStorage.getItem('email');
+    this.username = email != 'undefined' ?  email: '';
   },
   methods: {
-    async loginUser() {
+    async registerUser() {
       try {
-        const response = await axios.post(this.foo + 'login', { email: this.username, pass: this.password });
-        if (response.data.token) {
-          const token = response.data.token;
-          localStorage.setItem('email', response.data.user);
-          localStorage.setItem('jwtToken', token);
-          this.$emit('authenticated', true);
-          this.closeLogin();
-        }
-      } catch (error) {
-        console.error('Error al iniciar sesión: ' + error);
+        await axios.post(this.foo + 'register', {email: this.username, pass: this.password})
+          .then(response => {
+            if (response) {
+              let token = response.data.session_token;
+              localStorage.setItem('email', response.data.user);
+              localStorage.setItem('session_token', token);
+              location.reload();
+            }
+          })
+          .catch(error => {
+            console.error('Error al acceso : ' + error);
+          });
+      } catch (e) {
+        console.log(e)
       }
     },
-    closeLogin() {
-      this.$emit('login', false);
+    closeRegister() {
+      this.$emit('register', false); // Emitir el evento 'close' al padre
     }
   }
-};
+}
 </script>
 
 <style scoped>
-.login-overlay {
+.register-overlay {
   position: fixed;
   top: 0;
   left: 0;
@@ -81,7 +85,7 @@ export default {
   backdrop-filter: blur(5px); /* Efecto de desenfoque */
 }
 
-.login-container {
+.register-container {
   position: relative;
   width: 80%; /* Ajusta el ancho según necesites */
   max-width: 600px; /* Ancho máximo del formulario */
@@ -105,13 +109,13 @@ export default {
   z-index: 1100; /* Asegura que esté por encima del contenido */
 }
 
-#block-login {
+#block-register {
   margin: auto;
 }
 
 
 
-.input-login {
+.input-register {
   background-color: white; /* Fondo blanco */
   border: 1px solid #a3151a; /* Borde rojo */
   border-radius: 8px;
@@ -121,12 +125,12 @@ export default {
   box-sizing: border-box; /* Para incluir el padding en el ancho total */
 }
 
-.loginBtnRed{
+.registerBtnRed{
   background-color: #a3151a; /* Fondo blanco */
   color: white;
   padding: 2% 3%;
 }
-.loginBtnRed:hover{
+.registerBtnRed:hover{
   background-color: #831216; /* Fondo blanco */
   color: white;
   padding: 2% 3%;
