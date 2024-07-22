@@ -1,14 +1,8 @@
 <template>
   <div id="lastArticles">
-    <h3>Artículos recientes</h3>
-    <div class="article" v-for="(item, index) in article" :key="item.id" :style="{ animationDelay: `${index * 0.02}s` }">
+    <div class="article" v-for="(item, index) in articles" :key="item.id" :style="{ animationDelay: `${index * 0.02}s` }">
       <div class="last-article-content">
         <h1 class="truncate-multiline">{{ item.title }}</h1>
-        <router-link :to="`/profile/${item.user.id}`" class="userArticle" active-class="active">
-          {{ item.user.name }}
-        </router-link>
-        
-        
         <p class="truncate-multiline">{{ item.content }}</p>
       </div>
       <div class="last-article-image"></div>
@@ -21,9 +15,14 @@ import axios from "axios";
 
 export default {
   name: 'article-last-list',
+  props: {
+    articles: {
+      type: Array,
+      required: true
+    }
+  },
   data() {
     return {
-      article: [],
       currentPage: 1,
       totalPages: 1,
       itemsPerPage: 3,
@@ -61,7 +60,6 @@ export default {
       try {
         const response = await axios.get(`${this.server}article?page=${this.currentPage}&itemsPerPage=${this.itemsPerPage}&filter=${this.filter}`);
         this.article = response.data.listArticles.items;
-        console.log(this.article)
         this.totalPages = Math.ceil(response.data.listArticles.totalArticles / this.itemsPerPage);
       } catch (error) {
         console.error('Error al cargar productos:', error);
@@ -84,10 +82,7 @@ export default {
 </script>
 
 <style scoped>
-h3{
-  color: #a3151a !important;
-  padding-bottom: 10px;
-}
+
 .article {
   height: 180px;
   display: flex;
@@ -121,12 +116,6 @@ h3{
   background-size: cover;
   border-top-right-radius: 10px;
   border-bottom-right-radius: 10px;
-}
-
-.userArticle{
-  color: #a3151a;
-  font-weight: 500;
-  text-decoration: none;
 }
 
 @keyframes slideIn {

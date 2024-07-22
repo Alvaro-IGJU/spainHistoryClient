@@ -1,66 +1,71 @@
 <template>
-  <div class="login-overlay">
-    <div class="blur-background" @click="closeLogin"></div>
-    <div class="login-container">
-      <button class="btn-close" @click="closeLogin"></button>
-      <div class="container " id="block-login">
-        <!-- Contenido actual del formulario de inicio de sesión -->
-        <h5 class="text-center">INICIAR SESIÓN</h5>
+  <div class="profilePhotoForm-overlay">
+    <div class="blur-background" @click="closeProfilePhotoForm"></div>
+    <div class="profilePhotoForm-container">
+      <button class="btn-close" @click="closeProfilePhotoForm"></button>
+      <div class="container" id="block-profilePhotoForm">
+        <h5 class="text-center">ACTUALIZAR FOTO DE PERFIL</h5>
         
         <div class="form-outline mt-4">
-          <input type="email" v-model="username" name="username" placeholder="email@email.com" class="m-1 input-login"/>
+          <input type="file" @change="handleFileUpload" name="base64Image" placeholder="email@email.com" class="m-1 input-profilePhotoForm"/>
         </div>
-        <div class="form-outline">
-          <input type="password" v-model="password" name="password" placeholder="Password" class="m-1 input-login"/>
-        </div>
+      
         <div class="col-12 text-center mt-4">
-          <button class="btn loginBtnRed m-1" v-on:click="loginUser">Entrar</button>
+          <button class="btn profilePhotoFormBtnRed m-1" v-on:click="updateProfilePhoto">Actualizar</button>
         </div>
       </div>
     </div>
   </div>
 </template>
 
+
 <script>
 import axios from 'axios';
 
 export default {
-  name: 'login-user',
+  name: 'profilePhotoForm-user',
   data() {
     return {
-      username: null,
-      pass: null,
+      base64Image: '',
     };
   },
-  mounted() {
-    const email = localStorage.getItem('email');
-    this.username = email != 'undefined' ? email : '';
-  },
   methods: {
-    async loginUser() {
+    handleFileUpload(event) {
+      const file = event.target.files[0];
+      const reader = new FileReader();
+
+      reader.onload = (e) => {
+        this.base64Image = e.target.result;
+      };
+
+      reader.readAsDataURL(file);
+    },
+    async updateProfilePhoto() {
+      if (!this.base64Image) {
+        alert("Por favor, selecciona una imagen.");
+        return;
+      }
+
       try {
-        const response = await axios.post(this.foo + 'login', { email: this.username, pass: this.password });
-        if (response.data.token) {
-          const token = response.data.token;
-          localStorage.setItem('email', response.data.user);
-          localStorage.setItem('jwtToken', token);
-          localStorage.setItem('user_id', response.data.user_id);
-          this.$emit('authenticated', true);
-          this.closeLogin();
+        const response = await axios.post(this.foo + 'updateProfile', { base64Image: this.base64Image });
+        if (response.data.success) {
+          alert("Foto de perfil actualizada exitosamente.");
+          this.closeProfilePhotoForm();
         }
       } catch (error) {
-        console.error('Error al iniciar sesión: ' + error);
+        console.error('Error al actualizar la foto de perfil: ' + error);
       }
     },
-    closeLogin() {
-      this.$emit('login', false);
+    closeProfilePhotoForm() {
+      this.$emit('isProfilePhotoUserForm', false);
     }
   }
 };
 </script>
 
+
 <style scoped>
-.login-overlay {
+.profilePhotoForm-overlay {
   position: fixed;
   top: 0;
   left: 0;
@@ -82,7 +87,7 @@ export default {
   backdrop-filter: blur(5px); /* Efecto de desenfoque */
 }
 
-.login-container {
+.profilePhotoForm-container {
   position: relative;
   width: 80%; /* Ajusta el ancho según necesites */
   max-width: 600px; /* Ancho máximo del formulario */
@@ -91,7 +96,7 @@ export default {
   border-radius: 8px;
   box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2); /* Sombra suave */
   transform: translateY(-100%);
-    animation: slideIn 0.2s forwards;
+  animation: slideIn 0.2s forwards;
 }
 
 .btn-close {
@@ -106,36 +111,33 @@ export default {
   z-index: 1100; /* Asegura que esté por encima del contenido */
 }
 
-#block-login {
+#block-profilePhotoForm {
   margin: auto;
 }
 
-
-
-.input-login {
+.input-profilePhotoForm {
   background-color: white; /* Fondo blanco */
   border: 1px solid #a3151a; /* Borde rojo */
   border-radius: 8px;
-
   width: 100%;
   padding: 2%;
   box-sizing: border-box; /* Para incluir el padding en el ancho total */
 }
 
-.loginBtnRed{
+.profilePhotoFormBtnRed {
   background-color: #a3151a; /* Fondo blanco */
   color: white;
   padding: 2% 3%;
 }
-.loginBtnRed:hover{
+
+.profilePhotoFormBtnRed:hover {
   background-color: #831216; /* Fondo blanco */
   color: white;
   padding: 2% 3%;
 }
-.btn-close:hover{
-  
-  color: #831216;
 
+.btn-close:hover {
+  color: #831216;
 }
 
 @keyframes slideIn {
