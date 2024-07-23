@@ -5,7 +5,7 @@
         <img class="backgroundProfile" src="https://upload.wikimedia.org/wikipedia/commons/1/10/Batalla_de_las_Navas_de_Tolosa%2C_por_Francisco_van_Halen.jpg" alt="">
         <img :src="require('@/assets/pen-square-svgrepo-com.svg')" alt="Pen Icon" class="editBackgroundPhoto" />
         <div class="photoDiv">
-          <img class="photoProfile" :src="profile_img" alt="Profile Photo">
+          <img class="photoProfile" :src="profile_img" alt="Profile Photo" ref="profilePhotoImg">
           <img @click="showProfilePhotoUserForm" :src="require('@/assets/pen-square-svgrepo-com.svg')" alt="Pen Icon" class="editPhoto" />
         </div>
       </div>
@@ -41,7 +41,12 @@
         </div>
       </section>
     </div>
-    <ProfilePhotoUserForm v-if="isProfilePhotoUserForm" @isProfilePhotoUserForm="handleProfilePhotoFormEvent" :user_id="user_id"></ProfilePhotoUserForm>
+    <ProfilePhotoUserForm 
+      v-if="isProfilePhotoUserForm" 
+      @isProfilePhotoUserForm="handleProfilePhotoFormEvent" 
+      @photoUpdated="updatePhoto" 
+      :user_id="user_id">
+    </ProfilePhotoUserForm>
   </div>
 </template>
 
@@ -73,7 +78,7 @@ export default {
     };
   },
   mounted(){
-    this.user_id = localStorage.getItem("user_id");
+    this.user_id = parseInt(localStorage.getItem("user_id"));
     this.getUserInfo();
   },
   methods: {
@@ -94,9 +99,13 @@ export default {
     },
     handleProfilePhotoFormEvent(value) {
       this.isProfilePhotoUserForm = value;
+    },
+    updatePhoto(newPhoto) {
+      this.$refs.profilePhotoImg.src = newPhoto;
+      
     }
   }
-}
+};
 </script>
 
 <style>

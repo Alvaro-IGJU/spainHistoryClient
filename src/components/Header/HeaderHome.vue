@@ -4,11 +4,11 @@
         <div></div>
         <div class="titleHeader"><h1>Historia de España</h1></div>
         <div v-show="isAuthenticated" class="userProfileBtnContainer">
-            <HeaderUserProfileBtn></HeaderUserProfileBtn>
+            <HeaderUserProfileBtn :photo="photo"></HeaderUserProfileBtn>
         </div>
         <div class="buttonsHeader" v-show="!isAuthenticated">
             <HeaderRegisterBtn @register="handleRegister"></HeaderRegisterBtn>
-            <HeaderLoginBtn @login="handleLogin"></HeaderLoginBtn>
+            <HeaderLoginBtn  @login="handleLogin"></HeaderLoginBtn>
         </div>
     </header>
 </template>
@@ -29,7 +29,9 @@ export default {
     isAuthenticated: {
       type: Boolean,
       default: false
-        }
+        },
+        photo: String
+
     }
     ,mount(){
     },

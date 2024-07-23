@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <HeaderHome :isAuthenticated="isAuthenticated" @login="handleLogin" @register="handleRegister"></HeaderHome>
+    <HeaderHome :isAuthenticated="isAuthenticated" :photo="photo" @login="handleLogin" @register="handleRegister"></HeaderHome>
 
     <main id="mainSection">
       <HomeMain></HomeMain>
@@ -8,7 +8,7 @@
       <RouterView id="sectionContent"></RouterView>
     </main>
     
-    <LoginUser @authenticated="setAuthenticated" @login="handleLogin" v-show="login"></LoginUser>
+    <LoginUser @authenticated="setAuthenticated" @login="handleLogin" @photo="handlePhoto" v-show="login"></LoginUser>
     <RegisterUser @register="handleRegister" v-show="register"></RegisterUser>
   </div>
 </template>
@@ -32,7 +32,8 @@ export default {
     return {
       login: false,
       register: false,
-      isAuthenticated: false
+      isAuthenticated: false,
+      photo: ''
     };
   },
   mounted() {
@@ -44,6 +45,9 @@ export default {
     },
     handleRegister(register) {
       this.register = register;
+    },
+    handlePhoto(photo) {
+      this.photo = photo;
     },
     setAuthenticated(status) {
       this.isAuthenticated = status;

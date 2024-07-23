@@ -54,8 +54,7 @@ export default {
 
       try {
         const response = await axios.post(this.foo + 'updateProfile', {id: this.user_id, base64Image: this.base64Image });
-        if (response.data.success) {
-          alert("Foto de perfil actualizada exitosamente.");
+        if (response.data) {
           this.closeProfilePhotoForm();
         }
       } catch (error) {
@@ -63,7 +62,10 @@ export default {
       }
     },
     closeProfilePhotoForm() {
+      this.$emit('photoUpdated', this.base64Image); 
+
       this.$emit('isProfilePhotoUserForm', false);
+
     }
   }
 };

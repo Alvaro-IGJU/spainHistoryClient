@@ -11,7 +11,7 @@
           <input type="email" v-model="username" name="username" placeholder="email@email.com" class="m-1 input-login"/>
         </div>
         <div class="form-outline">
-          <input type="password" v-model="password" name="password" placeholder="Password" class="m-1 input-login"/>
+          <input type="password" v-model="pass" name="password" placeholder="Password" class="m-1 input-login"/>
         </div>
         <div class="col-12 text-center mt-4">
           <button class="btn loginBtnRed m-1" v-on:click="loginUser">Entrar</button>
@@ -39,13 +39,16 @@ export default {
   methods: {
     async loginUser() {
       try {
-        const response = await axios.post(this.foo + 'login', { email: this.username, pass: this.password });
+        const response = await axios.post(this.foo + 'login', { email: this.username, pass: this.pass });
         if (response.data.token) {
           const token = response.data.token;
+          console.log("USRAIUO",response.data)
           localStorage.setItem('email', response.data.user);
           localStorage.setItem('jwtToken', token);
           localStorage.setItem('user_id', response.data.user_id);
           this.$emit('authenticated', true);
+          this.$emit('photo', response.data.photo);
+
           this.closeLogin();
         }
       } catch (error) {
