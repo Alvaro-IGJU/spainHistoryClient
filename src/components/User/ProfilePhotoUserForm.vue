@@ -29,6 +29,12 @@ export default {
       base64Image: '',
     };
   },
+  props: {
+    user_id: {
+      type: Number,
+      required: true
+    }
+  },
   methods: {
     handleFileUpload(event) {
       const file = event.target.files[0];
@@ -47,7 +53,7 @@ export default {
       }
 
       try {
-        const response = await axios.post(this.foo + 'updateProfile', { base64Image: this.base64Image });
+        const response = await axios.post(this.foo + 'updateProfile', {id: this.user_id, base64Image: this.base64Image });
         if (response.data.success) {
           alert("Foto de perfil actualizada exitosamente.");
           this.closeProfilePhotoForm();
