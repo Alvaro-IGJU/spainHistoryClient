@@ -5,7 +5,8 @@
       <div class="last-article-content">
         <h1 class="truncate-multiline">{{ item.title }}</h1>
         <router-link :to="`/profile/${item.user.id}`" class="userArticle" active-class="active">
-          {{ item.user.name }}
+            <img :src="item.user.photo" class="userPhoto" alt="">
+            <span>{{ item.user.name }}</span>
         </router-link>
         
         
@@ -89,7 +90,7 @@ h3{
   padding-bottom: 10px;
 }
 .article {
-  height: 180px;
+  height: 190px;
   display: flex;
   margin-bottom: 10px; /* Añade un margen entre artículos */
   justify-content: space-between;
@@ -98,10 +99,7 @@ h3{
     animation: slideIn 0.2s ease-out forwards;
     animation-delay: var(--animation-delay);
 }
-.article:hover h1 {
-  color: #a3151a;
-  text-decoration: underline;
-}
+
 .last-article-content {
   width: 70%;
   overflow: hidden; /* Oculta el contenido que se desborde */
@@ -111,7 +109,7 @@ h3{
   -webkit-box-orient: vertical;
   overflow: hidden;
   text-overflow: ellipsis;
-  -webkit-line-clamp: 5; /* Número máximo de líneas antes de truncar */
+  -webkit-line-clamp: 4; /* Número máximo de líneas antes de truncar */
   white-space: normal; /* Permite múltiples líneas */
 }
 .last-article-image {
@@ -127,8 +125,28 @@ h3{
   color: #a3151a;
   font-weight: 500;
   text-decoration: none;
+  display: flex;
+  align-items: center;
+  justify-content: start;
+  width: 50%;
 }
 
+.userArticle:hover span{
+  text-decoration: underline;
+  font-weight: 600;
+}
+
+.userPhoto{
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  margin-right:2%;
+  cursor: pointer;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
 @keyframes slideIn {
   0% {
     transform: translateY(-100%);

@@ -1,18 +1,18 @@
 <template>
-  <div class="profilePhotoForm-overlay">
-    <div class="blur-background" @click="closeProfilePhotoForm"></div>
-    <div class="profilePhotoForm-container">
-      <button class="btn-close" @click="closeProfilePhotoForm"></button>
-      <div class="container" id="block-profilePhotoForm">
-        <h5 class="text-center">ACTUALIZAR FOTO DE PERFIL</h5>
+  <div class="bannerPhotoForm-overlay">
+    <div class="blur-background" @click="closeBannerPhotoForm"></div>
+    <div class="bannerPhotoForm-container">
+      <button class="btn-close" @click="closeBannerPhotoForm"></button>
+      <div class="container" id="block-bannerPhotoForm">
+        <h5 class="text-center">ACTUALIZAR BANNER DE PERFIL</h5>
         
         <div class="form-outline mt-4">
-          <input type="file" @change="handleFileUpload" name="base64Image" class="m-1 input-profilePhotoForm"/>
-          <div v-if="imageError" class="text-danger">{{ imageError }}</div> <!-- Mostrar errores aquí -->
+          <input type="file" @change="handleFileUpload" name="base64Image" class="m-1 input-bannerPhotoForm"/>
+          <div v-if="imageError" class="text-danger">{{ imageError }}</div>
         </div>
       
         <div class="col-12 text-center mt-4">
-          <button class="btn profilePhotoFormBtnRed m-1" v-on:click="updateProfilePhoto">Actualizar</button>
+          <button class="btn bannerPhotoFormBtnRed m-1" v-on:click="updateBannerPhoto">Actualizar</button>
         </div>
       </div>
     </div>
@@ -23,7 +23,7 @@
 import axios from 'axios';
 
 export default {
-  name: 'profilePhotoForm-user',
+  name: 'bannerPhotoForm-user',
   data() {
     return {
       base64Image: '',
@@ -70,32 +70,31 @@ export default {
 
       reader.readAsDataURL(file);
     },
-    async updateProfilePhoto() {
+    async updateBannerPhoto() {
       if (!this.base64Image) {
         alert("Por favor, selecciona una imagen.");
         return;
       }
 
       try {
-        const response = await axios.post(this.foo + 'updateProfile', { id: this.user_id, base64Image: this.base64Image });
+        const response = await axios.post(this.foo + 'updateProfile', { id: this.user_id, banner_image: this.base64Image });
         if (response.data) {
-          this.closeProfilePhotoForm();
-          window.location.reload(); // Recargar la página actual
+          this.closeBannerPhotoForm();
+          window.location.reload(); 
         }
       } catch (error) {
         console.error('Error al actualizar la foto de perfil: ' + error);
       }
     },
-    closeProfilePhotoForm() {
-      this.$emit('photoUpdated', this.base64Image); 
-      this.$emit('isProfilePhotoUserForm', false);
+    closeBannerPhotoForm() {
+      this.$emit('isBannerPhotoUserForm', false);
     }
   }
 };
 </script>
 
 <style scoped>
-.profilePhotoForm-overlay {
+.bannerPhotoForm-overlay {
   position: fixed;
   top: 0;
   left: 0;
@@ -117,7 +116,7 @@ export default {
   backdrop-filter: blur(5px); /* Efecto de desenfoque */
 }
 
-.profilePhotoForm-container {
+.bannerPhotoForm-container {
   position: relative;
   width: 80%; /* Ajusta el ancho según necesites */
   max-width: 600px; /* Ancho máximo del formulario */
@@ -141,11 +140,11 @@ export default {
   z-index: 1100; /* Asegura que esté por encima del contenido */
 }
 
-#block-profilePhotoForm {
+#block-bannerPhotoForm {
   margin: auto;
 }
 
-.input-profilePhotoForm {
+.input-bannerPhotoForm {
   background-color: white; /* Fondo blanco */
   border: 1px solid #a3151a; /* Borde rojo */
   border-radius: 8px;
@@ -154,13 +153,13 @@ export default {
   box-sizing: border-box; /* Para incluir el padding en el ancho total */
 }
 
-.profilePhotoFormBtnRed {
+.bannerPhotoFormBtnRed {
   background-color: #a3151a; /* Fondo rojo */
   color: white;
   padding: 2% 3%;
 }
 
-.profilePhotoFormBtnRed:hover {
+.bannerPhotoFormBtnRed:hover {
   background-color: #831216; /* Fondo rojo */
   color: white;
   padding: 2% 3%;

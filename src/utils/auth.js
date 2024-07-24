@@ -2,6 +2,6 @@
 
 export function isAuthenticated() {
    const token = localStorage.getItem('jwtToken');
-    return !token; 
+    return token; 
   }
   

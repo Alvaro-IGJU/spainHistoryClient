@@ -3,10 +3,8 @@
     <div class="headerProfile">
       <div class="profileRow">
         <img class="backgroundProfile" :src="profile_banner" alt="">
-        <img @click="showBannerPhotoUserForm" :src="require('@/assets/pen-square-svgrepo-com.svg')" alt="Pen Icon" class="editBackgroundPhoto" />
         <div class="photoDiv">
           <img class="photoProfile" :src="profile_img" alt="Profile Photo" >
-          <img @click="showProfilePhotoUserForm" :src="require('@/assets/pen-square-svgrepo-com.svg')" alt="Pen Icon" class="editPhoto" />
         </div>
       </div>
       <div class="userSpecs">
@@ -41,38 +39,24 @@
         </div>
       </section>
     </div>
-    <ProfilePhotoUserForm 
-      v-if="isProfilePhotoUserForm" 
-      @isProfilePhotoUserForm="handleProfilePhotoFormEvent" 
-      @photoUpdated="updatePhoto" 
-      :user_id="user_id">
-    </ProfilePhotoUserForm>
-    <ProfileBannerUserForm 
-      v-if="isBannerPhotoUserForm" 
-      @isBannerPhotoUserForm="handleBannerPhotoFormEvent" 
-      :user_id="user_id">
-    </ProfileBannerUserForm>
+   
   </div>
 </template>
 
 <script>
 import ArticleUserList from "@/components/Article/ArticleUserList.vue";
-import ProfilePhotoUserForm from "@/components/User/ProfilePhotoUserForm.vue";
-import ProfileBannerUserForm from "@/components/User/ProfileBannerUserForm.vue";
 import axios from "axios";
 
 export default {
-  name: 'profile-user',
+  name: 'profile-other-user',
   components: {
     ArticleUserList,
-    ProfilePhotoUserForm,
-    ProfileBannerUserForm,
   },
   data() {
     return {
       name: '',
       profile_img: '',
-      profile_banner: '',
+      profile_banner:'',
       articles: [],  // Tus artículos aquí
       reviews: [],   // Tus reseñas aquí
       podcasts: [],  // Tus podcasts aquí
@@ -82,12 +66,11 @@ export default {
       itemsPerPage: 3,
       filter: '',
       isProfilePhotoUserForm: false,
-      isBannerPhotoUserForm: false,
       server: this.foo || 'http://127.0.0.1:8000/', // Asegúrate de definir foo o un valor predeterminado
     };
   },
   mounted(){
-    this.user_id = parseInt(localStorage.getItem("user_id"));
+    this.user_id = parseInt(this.$route.params.id);
     this.getUserInfo();
   },
   methods: {
@@ -96,28 +79,14 @@ export default {
         let id = parseInt(this.user_id);
         const response = await axios.get(`${this.server}listUsers/?id=${id}`);
         let user = response.data.listUsers.items[0];
+        console.log(user)
         this.name = user.name;
         this.profile_img = user.profile_image; // Asegúrate de que esto sea una cadena Base64 válida
-        this.profile_banner = user.profile_banner; // Asegúrate de que esto sea una cadena Base64 válida
+        this.profile_banner = user.profile_banner;
         this.articles = user.articles;
       } catch (error) {
         console.error('Error al cargar productos:', error);
       }
-    },
-    showProfilePhotoUserForm(){
-      this.isProfilePhotoUserForm = true;
-    },
-    handleProfilePhotoFormEvent(value) {
-      this.isProfilePhotoUserForm = value;
-    },
-    updatePhoto(newPhoto) {
-      this.$emit('photoUpdated', newPhoto); 
-    },
-    showBannerPhotoUserForm(){
-      this.isBannerPhotoUserForm = true;
-    },
-    handleBannerPhotoFormEvent(value) {
-      this.isBannerPhotoUserForm = value;
     },
    
   }
@@ -149,18 +118,15 @@ export default {
 }
 
 .backgroundProfile {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  object-position: center center;
-
-  z-index: -1;
-  border-radius: 10px;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    z-index: -1;
+    border-radius: 10px;
 }
-
 
 .photoDiv {
     position: relative; /* Contenedor relativo para el ícono de edición */
